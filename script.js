@@ -29,6 +29,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Setup event listeners
     setupEventListeners();
     
+    // Setup password toggle
+    setupPasswordToggle();
+    
     // Load attempt count from sessionStorage
     const storedAttempts = sessionStorage.getItem('loginAttempts');
     if (storedAttempts) {
@@ -109,27 +112,83 @@ function unlockAccount() {
 function setupEventListeners() {
     // Login form submission
     const loginForm = document.getElementById('loginForm');
-    loginForm.addEventListener('submit', handleLogin);
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
     
     // Forgot password link
     const forgotPasswordLink = document.getElementById('forgotPasswordLink');
-    forgotPasswordLink.addEventListener('click', openForgotPasswordModal);
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', openForgotPasswordModal);
+    }
     
     // Forgot password form
     const forgotPasswordForm = document.getElementById('forgotPasswordForm');
-    forgotPasswordForm.addEventListener('submit', handleForgotPassword);
+    if (forgotPasswordForm) {
+        forgotPasswordForm.addEventListener('submit', handleForgotPassword);
+    }
     
     // Modal close button
     const closeButton = document.querySelector('.close');
-    closeButton.addEventListener('click', closeForgotPasswordModal);
+    if (closeButton) {
+        closeButton.addEventListener('click', closeForgotPasswordModal);
+    }
     
     // Close modal when clicking outside
     const modal = document.getElementById('forgotPasswordModal');
-    window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            closeForgotPasswordModal();
+    if (modal) {
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeForgotPasswordModal();
+            }
+        });
+    }
+    
+    // Social login buttons (demo only - show message)
+    const socialButtons = document.querySelectorAll('.social-button');
+    socialButtons.forEach(button => {
+        button.addEventListener('click', handleSocialLogin);
+    });
+}
+
+// Setup password toggle functionality
+function setupPasswordToggle() {
+    const passwordToggle = document.getElementById('passwordToggle');
+    const passwordInput = document.getElementById('password');
+    
+    if (!passwordToggle || !passwordInput) {
+        console.warn('Password toggle elements not found');
+        return;
+    }
+    
+    const eyeIcon = passwordToggle.querySelector('.eye-icon');
+    const eyeOffIcon = passwordToggle.querySelector('.eye-off-icon');
+    
+    if (!eyeIcon || !eyeOffIcon) {
+        console.warn('Password toggle icons not found');
+        return;
+    }
+    
+    passwordToggle.addEventListener('click', function() {
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.style.display = 'none';
+            eyeOffIcon.style.display = 'block';
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.style.display = 'block';
+            eyeOffIcon.style.display = 'none';
         }
     });
+}
+
+// Handle social login (demo only)
+function handleSocialLogin(event) {
+    const provider = event.currentTarget.classList.contains('google') ? 'Google' : 
+                     event.currentTarget.classList.contains('facebook') ? 'Facebook' : 'Apple';
+    
+    // In production, this would redirect to OAuth provider
+    showError(`Social login with ${provider} is not available in this demo. Please use email/password login.`);
 }
 
 // Handle login submission
