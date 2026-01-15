@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FraudZap - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .dashboard-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .welcome-message {
+            color: #6b7280;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+        
+        .info-box {
+            background: #f9fafb;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .logout-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Welcome to FraudZap Dashboard</h1>
+        <p class="welcome-message" id="welcomeMessage">Loading...</p>
+        
+        <div class="info-box">
+            <h3>🎉 Login Successful!</h3>
+            <p>You have successfully authenticated and accessed the FraudZap platform.</p>
+            <p style="margin-top: 10px;"><strong>Session Token:</strong> <span id="authToken"></span></p>
+        </div>
+        
+        <button class="logout-button" onclick="logout()">Logout</button>
+    </div>
+    
+    <script>
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', function() {
+            const authToken = sessionStorage.getItem('authToken');
+            const userEmail = sessionStorage.getItem('userEmail');
+            
+            if (!authToken) {
+                // Not authenticated, redirect to login
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Display user info
+            document.getElementById('welcomeMessage').textContent = `Logged in as: ${userEmail}`;
+            document.getElementById('authToken').textContent = authToken;
+        });
+        
+        function logout() {
+            sessionStorage.removeItem('authToken');
+            sessionStorage.removeItem('userEmail');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
