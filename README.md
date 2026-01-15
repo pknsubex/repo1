@@ -95,15 +95,42 @@ For demonstration purposes, the following mock credentials are available:
 
 ## Security Notes
 
-⚠️ **Important**: This is a frontend demonstration. In a production environment:
+⚠️ **IMPORTANT - DEMONSTRATION ONLY**: This is a frontend demonstration with mock authentication. In a production environment, you MUST implement the following:
 
-- User authentication should be handled server-side
-- Passwords should never be stored in frontend code
-- Use proper JWT tokens or session cookies
-- Implement CSRF protection
-- Use HTTPS with valid SSL certificates
-- Add server-side rate limiting
-- Implement proper password hashing (bcrypt, argon2, etc.)
+### Critical Security Requirements for Production:
+
+1. **Server-Side Authentication**
+   - All authentication MUST be handled by a secure backend server
+   - Never store credentials in client-side code
+   - Use secure session management (JWT tokens, secure cookies)
+
+2. **Password Security**
+   - Use proper password hashing algorithms (bcrypt, argon2, scrypt)
+   - Implement constant-time comparison to prevent timing attacks
+   - Never send or compare passwords client-side
+
+3. **Transport Security**
+   - Use HTTPS with valid SSL/TLS certificates for all connections
+   - Implement HTTP Strict Transport Security (HSTS)
+   - Enforce secure cookies with HttpOnly and Secure flags
+
+4. **Rate Limiting & Protection**
+   - Implement server-side rate limiting for login attempts
+   - Add CAPTCHA after failed login attempts
+   - Use CSRF tokens to prevent cross-site request forgery
+   - Implement IP-based throttling and monitoring
+
+5. **Token Security**
+   - Use cryptographically secure, unpredictable tokens
+   - Implement proper token expiration and refresh mechanisms
+   - Store tokens securely (httpOnly cookies preferred over localStorage)
+
+6. **Additional Security Measures**
+   - Implement Content Security Policy (CSP)
+   - Add input validation and sanitization on both client and server
+   - Use parameterized queries to prevent SQL injection
+   - Implement proper logging and monitoring
+   - Regular security audits and penetration testing
 
 ## Architecture
 

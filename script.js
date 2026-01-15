@@ -10,7 +10,9 @@ let loginAttempts = 0;
 let isAccountLocked = false;
 let lockoutTimer = null;
 
-// Mock user database (In production, this would be server-side)
+// Mock user database for DEMONSTRATION ONLY
+// ⚠️ SECURITY WARNING: In production, this MUST be implemented server-side
+// Never store credentials in client-side code - this is for demo purposes only
 const MOCK_USERS = {
     'admin@fraudzap.com': 'Admin@123',
     'user@fraudzap.com': 'User@123'
@@ -37,8 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
 // Enforce HTTPS connection
 function enforceHTTPS() {
     if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-        console.warn('Redirecting to HTTPS for secure connection...');
-        // In production, this would redirect to HTTPS
+        console.warn('⚠️ Insecure connection detected. HTTPS is required for production.');
+        // ⚠️ PRODUCTION NOTE: Uncomment the line below to redirect to HTTPS in production
         // window.location.href = 'https://' + window.location.host + window.location.pathname;
     }
 }
@@ -169,8 +171,12 @@ async function handleLogin(event) {
 
 // Authenticate user
 function authenticateUser(email, password) {
-    // In production, this would make an HTTPS API call to the backend
-    // For demo purposes, using mock validation
+    // ⚠️ PRODUCTION NOTE: This is a client-side demo only
+    // In production:
+    // - Make HTTPS API call to backend authentication endpoint
+    // - Use proper password hashing (bcrypt, argon2, etc.)
+    // - Use constant-time comparison to prevent timing attacks
+    // - Never compare passwords client-side
     
     if (MOCK_USERS[email] && MOCK_USERS[email] === password) {
         // Successful login
@@ -179,6 +185,8 @@ function authenticateUser(email, password) {
         localStorage.removeItem('lockoutExpiry');
         
         // Store authentication token (in production)
+        // ⚠️ PRODUCTION NOTE: Use cryptographically secure JWT tokens from server
+        // This mock token is for demonstration only
         sessionStorage.setItem('authToken', 'mock-jwt-token-' + Date.now());
         sessionStorage.setItem('userEmail', email);
         
